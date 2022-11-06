@@ -1,0 +1,101 @@
+---
+title: "bell_bonheure_pieper_edge"
+output: html_document
+date: "2022-11-06"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("~/Desktop/MBAn/15.072 (Analytics Edge)/edgeproject-main") #zach setup link
+#setwd("~/Desktop/MBAn/15.072 (Analytics Edge)/edgeproject-main") #guillaume setup link
+#setwd("~/Desktop/MBAn/15.072 (Analytics Edge)/edgeproject-main") #paula setup link
+library(caret)
+library(ROCR)
+library(dplyr)
+```
+
+```{r}
+games = read.csv("match_scores.csv")
+teams.train = read.csv("team_data.csv")
+teams.test = read.csv("team_data_21.csv")
+```
+
+```{r}
+games$confW = NA
+games$confL = NA
+games$G = NA
+games$W = NA
+games$ADJOE = NA
+games$ADJDE = NA
+games$BARTHAG = NA
+games$EFG_O = NA
+games$EFG_D = NA
+games$TOR = NA
+games$TORD = NA
+games$ORB = NA
+games$DRB = NA
+games$FTR = NA
+games$FTRD = NA
+games$X2P_O = NA
+games$X2P_D = NA
+games$X3P_O = NA
+games$X3P_D = NA
+games$ADJ_T = NA
+games$WAB = NA
+```
+
+```{r}
+update_table <- function(game_index, data){
+  year <- games[game_index,"YEAR"]
+  winner <- games[game_index,"WTEAM"]
+  winner_seed <- games[game_index,"WSEED"]
+  loser <- games[game_index,"LTEAM"]
+  loser_seed <- games[game_index,"LSEED"]
+  winner_index <- which(data$TEAM == winner & data$YEAR == year)
+  loser_index <- which(data$TEAM == loser & data$YEAR == year)
+  
+  team1_index <- winner_index
+  team2_index <- loser_index
+  
+  if(winner_seed > loser_seed){
+    team1_index <- loser_index
+    team2_index <- winner_index
+  }
+
+  games[game_index,"confW"] = data[winner_index,"CONF"]
+  games[game_index,"confL"] = data[loser_index,"CONF"]
+  games[game_index,"G"] = data[team1_index,"G"] - data[team2_index,"G"]
+  games[game_index,"W"] = data[team1_index,"W"] - data[team2_index,"W"]
+  games[game_index,"ADJOE"] = data[team1_index,"ADJOE"] - data[team2_index,"ADJOE"]
+  games[game_index,"ADJDE"] = data[team1_index,"ADJDE"] - data[team2_index,"ADJDE"]
+  games[game_index,"BARTHAG"] = data[team1_index,"BARTHAG"] - data[team2_index,"BARTHAG"]
+  games[game_index,"EFG_O"] = data[team1_index,"EFG_O"] - data[team2_index,"EFG_O"]
+  games[game_index,"EFG_D"] = data[team1_index,"EFG_D"] - data[team2_index,"EFG_D"]
+  games[game_index,"TOR"] = data[team1_index,"TOR"] - data[team2_index,"TOR"]
+  games[game_index,"TORD"] = data[team1_index,"TORD"] - data[team2_index,"TORD"]
+  games[game_index,"ORB"] = data[team1_index,"ORB"] - data[team2_index,"ORB"]
+  games[game_index,"DRB"] = data[team1_index,"DRB"] - data[team2_index,"DRB"]
+  games[game_index,"FTR"] = data[team1_index,"FTR"] - data[team2_index,"FTR"]
+  games[game_index,"FTRD"] = data[team1_index,"FTRD"] - data[team2_index,"FTRD"]
+  games[game_index,"X2P_O"] = data[team1_index,"X2P_O"] - data[team2_index,"X2P_O"]
+  games[game_index,"X2P_D"] = data[team1_index,"X2P_D"] - data[team2_index,"X2P_D"]
+  games[game_index,"X3P_O"] = data[team1_index,"X3P_O"] - data[team2_index,"X3P_O"]
+  games[game_index,"X3P_D"] = data[team1_index,"X3P_D"] - data[team2_index,"X3P_D"]
+  games[game_index,"ADJ_T"] = data[team1_index,"ADJ_T"] - data[team2_index,"ADJ_T"]
+  games[game_index,"WAB"] = data[team1_index,"WAB"] - data[team2_index,"WAB"]
+  
+  return(games)
+}
+  
+```
+
+```{r}
+#for (x in 2:383){
+#  games <- update_table(x,teams.train)
+#}
+#length(games[,1])
+games <- update_table(1,teams.train)
+```
