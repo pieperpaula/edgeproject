@@ -1,0 +1,22 @@
+---
+title: "LinearRegression"
+output: html_document
+date: "2022-11-16"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("~/Documents/GitHub/edgeproject") #for zach
+games = read.csv("game_difference.csv")
+games = subset(games, select=-c(X))
+games.train <- games[games$YEAR < 2019, ]
+games.test <- games[games$YEAR >= 2019, ]
+```
+
+```{r}
+lin_reg = lm(SCORE_DIFF~. -WTEAM -LTEAM -WSCORE -LSCORE, data=games.train)
+summary(lin_reg)
+```
