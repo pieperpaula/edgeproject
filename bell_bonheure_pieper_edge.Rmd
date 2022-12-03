@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-setwd("~/Desktop/MBAn/15.072 (Analytics Edge)/edgeproject-main") #zach setup link
+setwd("~/Documents/GitHub/edgeproject") #zach setup link
 #setwd("~/Desktop/MBAn/15.072 (Analytics Edge)/edgeproject-main") #guillaume setup link
 #setwd("~/Desktop/MBAn/15.072 (Analytics Edge)/edgeproject-main") #paula setup link
 library(caret)
