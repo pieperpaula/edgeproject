@@ -1,0 +1,43 @@
+---
+title: "LinearRegression"
+output: html_document
+date: "2022-11-16"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("~/Documents/GitHub/edgeproject") #for zach
+games = read.csv("game_difference.csv")
+games = subset(games, select=-c(X,WTEAM,LTEAM,WSCORE,LSCORE,confW,confL))
+games.train <- games[games$YEAR < 2019, ]
+games.test <- games[games$YEAR >= 2019, ]
+```
+
+```{r}
+library(ggcorrplot)
+ggcorrplot(cor(games.train))
+```
+
+```{r}
+lin_reg = lm(SCORE_DIFF~. -LSEED, data=games.train)
+summary(lin_reg)
+```
+
+```{r}
+lin.mean <- mean(games.train$SCORE_DIFF)
+lin_SST <- sum((lin.mean - games.test$SCORE_DIFF)^2)
+
+lin_pred <- predict(lin_reg, newdata = games.test)
+lin_SSE <- sum((lin_pred - games.test$SCORE_DIFF)^2)
+lin_osr <- 1 - lin_SSE/lin_SST
+
+
+```
+
+
+
+
+
