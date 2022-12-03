@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 setwd("~/Documents/GitHub/edgeproject") #for zach
 games = read.csv("game_diff_upd.csv")
-games = subset(games, select=-c(HTEAM,LTEAM,HSCORE,LSCORE))
+games = subset(games, select=-c(HTEAM,LTEAM,HSCORE,LSCORE,UPSET))
 games.train <- games[games$YEAR < 2019, ]
 games.test <- games[games$YEAR >= 2019, ]
 ```
@@ -22,7 +22,7 @@ ggcorrplot(cor(games.train))
 ```
 
 ```{r}
-lin_reg = lm(SCORE_DIFF~. -EFG_D -EFG_O -BARTHAG, data=games.train)
+lin_reg = lm(SCORE_DIFF~. -HSEED -LSEED -ADJOE -ADJDE -YEAR -ROUND -EFG_D -EFG_O -BARTHAG, data=games.train)
 summary(lin_reg)
 ```
 
