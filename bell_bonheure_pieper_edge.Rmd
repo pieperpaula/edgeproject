@@ -50,23 +50,18 @@ games$WAB = NA
 ```{r}
 update_table <- function(game_index, data){
   year <- games[game_index,"YEAR"]
-  winner <- games[game_index,"WTEAM"]
-  winner_seed <- games[game_index,"WSEED"]
-  loser <- games[game_index,"LTEAM"]
-  loser_seed <- games[game_index,"LSEED"]
-  winner_index <- which(data$TEAM == winner & data$YEAR == year)
-  loser_index <- which(data$TEAM == loser & data$YEAR == year)
+  fav <- games[game_index,"HTEAM"]
+  fav_seed <- games[game_index,"HSEED"]
+  underdog <- games[game_index,"LTEAM"]
+  underdog_seed <- games[game_index,"LSEED"]
+  fav_index <- which(data$TEAM == fav & data$YEAR == year)
+  underdog_index <- which(data$TEAM == underdog & data$YEAR == year)
   
-  team1_index <- winner_index
-  team2_index <- loser_index
-  
-  if(winner_seed > loser_seed){
-    team1_index <- loser_index
-    team2_index <- winner_index
-  }
+  team1_index <- fav_index
+  team2_index <- underdog_index
 
-  games[game_index,"confW"] = data[winner_index,"CONF"]
-  games[game_index,"confL"] = data[loser_index,"CONF"]
+  games[game_index,"confH"] = data[fav_index,"CONF"]
+  games[game_index,"confL"] = data[underdog_index,"CONF"]
   games[game_index,"G"] = data[team1_index,"G"] - data[team2_index,"G"]
   games[game_index,"W"] = data[team1_index,"W"] - data[team2_index,"W"]
   games[game_index,"ADJOE"] = data[team1_index,"ADJOE"] - data[team2_index,"ADJOE"]
