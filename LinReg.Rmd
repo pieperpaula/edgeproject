@@ -38,10 +38,25 @@ lin_osr <- 1 - lin_SSE/lin_SST
 ```
 
 ```{r}
-games2 = read.csv("upset_data.csv")
-games2 = subset(games2, select=-c(X,Unnamed..0,HTEAM,LTEAM,HSCORE,LSCORE,SCORE_DIFF))
+games_full = read.csv("upset_data.csv")
+games2 = subset(games_full, select=-c(X,Unnamed..0,HTEAM,LTEAM,HSCORE,LSCORE,SCORE_DIFF))
 games2.train <- games2[games2$YEAR < 2019, ]
 games2.test <- games2[games2$YEAR >= 2019, ]
+model.r1 <- games2[games2$YEAR == 2021, ]
+model.r1 <- model.r1[model.r1$ROUND == 1, ]
+model.r1_a = subset(model.r1, select=-c(UPSET))
+
+model.r2 <- read.csv("r2games_log.csv")
+model.r2_a = subset(model.r2, select=-c(X,HTEAM,LTEAM,WAB,confH,confL))
+
+model.r3 <- read.csv("r3games_log.csv")
+model.r3_a = subset(model.r3, select=-c(X,HTEAM,LTEAM,WAB,confH,confL))
+
+model.r4 <- read.csv("r4games_log.csv")
+model.r4_a = subset(model.r4, select=-c(X,HTEAM,LTEAM,WAB,confH,confL))
+
+model.r5 <- read.csv("r5games_log.csv")
+model.r5_a = subset(model.r5, select=-c(X,HTEAM,LTEAM,WAB,confH,confL))
 ```
 
 ```{r}
@@ -61,4 +76,40 @@ prob
 threshPred <- (prob > 0.5)
 confusion.matrix = table(games2.test$UPSET, threshPred)
 confusion.matrix
+```
+
+```{r}
+r1_log_pred <- predict(log_reg, newdata = model.r1_a)
+r1odds <- exp(r1_log_pred)
+r1prob <- r1odds/(1+r1odds)
+r1prob
+```
+
+
+```{r}
+r2_log_pred <- predict(log_reg, newdata = model.r2_a)
+r2odds <- exp(r2_log_pred)
+r2prob <- r2odds/(1+r2odds)
+r2prob
+```
+
+```{r}
+r3_log_pred <- predict(log_reg, newdata = model.r3_a)
+r3odds <- exp(r3_log_pred)
+r3prob <- r3odds/(1+r3odds)
+r3prob
+```
+
+```{r}
+r4_log_pred <- predict(log_reg, newdata = model.r4_a)
+r4odds <- exp(r4_log_pred)
+r4prob <- r4odds/(1+r4odds)
+r4prob
+```
+
+```{r}
+r5_log_pred <- predict(log_reg, newdata = model.r5_a)
+r5odds <- exp(r5_log_pred)
+r5prob <- r5odds/(1+r5odds)
+r5prob
 ```
