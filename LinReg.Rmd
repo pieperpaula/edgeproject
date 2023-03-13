@@ -66,8 +66,8 @@ model.r1_21_a = subset(model.r1_21, select=-c(X,HTEAM,LTEAM,WAB))
 ```
 
 ```{r}
-#log_reg = glm(UPSET~. -HSEED -LSEED -ADJOE -ADJDE -YEAR -ROUND -EFG_D -EFG_O -BARTHAG, data=games2.train, family="binomial")
-log_reg = glm(UPSET~. -HSEED -LSEED -YEAR -ROUND, data=games2.train, family="binomial")
+log_reg = glm(UPSET~. -HSEED -LSEED -ADJOE -ADJDE -YEAR -ROUND -EFG_D -EFG_O -BARTHAG, data=games2.train, family="binomial")
+#log_reg = glm(UPSET~. -HSEED -LSEED -YEAR -ROUND, data=games2.train, family="binomial")
 summary(log_reg)
 ```
 
