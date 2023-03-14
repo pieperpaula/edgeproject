@@ -39,34 +39,39 @@ lin_osr <- 1 - lin_SSE/lin_SST
 
 ```{r}
 games_full = read.csv("upset_data.csv")
-games2 = subset(games_full, select=-c(X,Unnamed..0,HTEAM,LTEAM,HSCORE,LSCORE,SCORE_DIFF))
+games2 = subset(games_full, select=-c(X,HTEAM,LTEAM,HSCORE,LSCORE,SCORE_DIFF))
 games2.train <- games2[games2$YEAR < 2019, ]
 games2.test <- games2[games2$YEAR >= 2019, ]
-model.r1 <- games2[games2$YEAR == 2021, ]
-model.r1 <- model.r1[model.r1$ROUND == 1, ]
-model.r1_a = subset(model.r1, select=-c(UPSET))
+#model.r1 <- games2[games2$YEAR == 2021, ]
+#model.r1 <- model.r1[model.r1$ROUND == 1, ]
+#model.r1_a = subset(model.r1, select=-c(UPSET))
 
-model.r2 <- read.csv("Logistic 2021 Model/r2games_log.csv")
-model.r2_a = subset(model.r2, select=-c(X,HTEAM,LTEAM,WAB,confH,confL))
+#model.r2 <- read.csv("Logistic 2021 Model/r2games_log.csv")
+#model.r2_a = subset(model.r2, select=-c(X,HTEAM,LTEAM,WAB,confH,confL))
 
-model.r3 <- read.csv("Logistic 2021 Model/r3games_log.csv")
-model.r3_a = subset(model.r3, select=-c(X,HTEAM,LTEAM,WAB,confH,confL))
+#model.r3 <- read.csv("Logistic 2021 Model/r3games_log.csv")
+#model.r3_a = subset(model.r3, select=-c(X,HTEAM,LTEAM,WAB,confH,confL))
 
-model.r4 <- read.csv("Logistic 2021 Model/r4games_log.csv")
-model.r4_a = subset(model.r4, select=-c(X,HTEAM,LTEAM,WAB,confH,confL))
+#model.r4 <- read.csv("Logistic 2021 Model/r4games_log.csv")
+#model.r4_a = subset(model.r4, select=-c(X,HTEAM,LTEAM,WAB,confH,confL))
 
-model.r5 <- read.csv("Logistic 2021 Model/r5games_log.csv")
-model.r5_a = subset(model.r5, select=-c(X,HTEAM,LTEAM,WAB,confH,confL))
+#model.r5 <- read.csv("Logistic 2021 Model/r5games_log.csv")
+#model.r5_a = subset(model.r5, select=-c(X,HTEAM,LTEAM,WAB,confH,confL))
 
 model.r1_22 <- read.csv("r1games_2022.csv")
 model.r1_22_a = subset(model.r1_22, select=-c(X,HTEAM,LTEAM,WAB))
 
-model.r1_21 <- read.csv("r1games_2021.csv")
-model.r1_21_a = subset(model.r1_21, select=-c(X,HTEAM,LTEAM,WAB))
+#model.r1_21 <- read.csv("r1games_2021.csv")
+#model.r1_21_a = subset(model.r1_21, select=-c(X,HTEAM,LTEAM,WAB))
+
+model.r23 <- read.csv("games_2023.csv")
+model.r23_a = subset(model.r23, select=-c(X,HTEAM,LTEAM,WAB))
 ```
 
 ```{r}
-log_reg = glm(UPSET~. -HSEED -LSEED -ADJOE -ADJDE -YEAR -ROUND -EFG_D -EFG_O -BARTHAG, data=games2.train, family="binomial")
+#log_reg = glm(UPSET~. -HSEED -LSEED -ADJOE -ADJDE -YEAR -ROUND -EFG_D -EFG_O -BARTHAG, data=games2.train, family="binomial")
+
+log_reg = glm(upset~. -HSEED -LSEED -confW -confL -ADJOE -ADJDE -YEAR -ROUND -EFG_D -EFG_O -BARTHAG, data=games2, family="binomial")
 #log_reg = glm(UPSET~. -HSEED -LSEED -YEAR -ROUND, data=games2.train, family="binomial")
 summary(log_reg)
 ```
@@ -132,4 +137,11 @@ r11_log_pred <- predict(log_reg, newdata = model.r1_21_a)
 r11odds <- exp(r11_log_pred)
 r11prob <- r11odds/(1+r11odds)
 r11prob
+```
+
+```{r}
+r23_log_pred <- predict(log_reg, newdata = model.r23_a)
+r23odds <- exp(r23_log_pred)
+r23prob <- r23odds/(1+r23odds)
+r23prob
 ```
