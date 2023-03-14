@@ -25,6 +25,8 @@ games_r2_2021 = read.csv("Logistic 2021 Model/r2_2021_logistic.csv")
 #games_r5_2021 = read.csv("r5_2021_logistic.csv")
 games_r1_2022 = read.csv("r1_2022.csv")
 games_r1_2021 = read.csv("r1_2021.csv")
+games_2023 = read.csv("all_games_2023.csv")
+teams_2023 = read.csv("teams2023.csv")
 teams_2022 = read.csv("team2022.csv")
 teams = read.csv("team_data.csv")
 teams.test = read.csv("team_data_21.csv")
@@ -62,6 +64,7 @@ organize(games_r2_2021)
 #organize(games_r5_2021)
 organize(games_r1_2022)
 organize(games_r1_2021)
+organize(games_2023)
 ```
 
 ```{r}
@@ -76,7 +79,7 @@ update_table <- function(games, game_index, data){
   
   team1_index <- fav_index
   team2_index <- underdog_index
-
+  
   #games[game_index,"confH"] = data[fav_index,"CONF"]
   #games[game_index,"confL"] = data[underdog_index,"CONF"]
   games[game_index,"G"] = data[team1_index,"G"] - data[team2_index,"G"]
@@ -147,11 +150,18 @@ for (x in 1:31){
 ```
 
 ```{r}
+for (x in 1:2278){
+  games_2023 <- update_table(games_2023,x,teams_2023)
+}
+```
+
+```{r}
 #write.csv(games_r2_2021, "r2games_log.csv")
 #write.csv(games_r3_2021, "r3games_log.csv")
 #write.csv(games_r4_2021, "r4games_log.csv")
 #write.csv(games_r5_2021, "r5games_log.csv")
 #write.csv(games_r1_2022, "r1games_2022.csv")
-write.csv(games_r1_2021, "r1games_2021.csv")
+#write.csv(games_r1_2021, "r1games_2021.csv")
+write.csv(games_2023, "games_2023.csv")
 ```
 
