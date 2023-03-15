@@ -38,7 +38,8 @@ lin_osr <- 1 - lin_SSE/lin_SST
 ```
 
 ```{r}
-games_full = read.csv("upset_data.csv")
+#games_full = read.csv("upset_data.csv")
+games_full = read.csv("full_22_data.csv")
 games2 = subset(games_full, select=-c(X,HTEAM,LTEAM,HSCORE,LSCORE,SCORE_DIFF,confW,confL,WAB))
 games2.train <- games2[games2$YEAR < 2019, ]
 games2.test <- games2[games2$YEAR >= 2019, ]
@@ -69,7 +70,7 @@ model.r23_a = subset(model.r23, select=-c(X,HTEAM,LTEAM,WAB))
 ```
 
 ```{r}
-log_reg = glm(upset~. -HSEED -LSEED -ADJOE -ADJDE -YEAR -ROUND -EFG_D -EFG_O -BARTHAG, data=games2.train, family="binomial")
+log_reg = glm(upset~. -HSEED -LSEED -ADJOE -ADJDE -YEAR -ROUND -EFG_D -EFG_O -BARTHAG, data=games2, family="binomial")
 
 #log_reg = glm(upset~. -HSEED -LSEED -confW -confL -ADJOE -ADJDE -YEAR -ROUND -EFG_D -EFG_O -BARTHAG, data=games2, family="binomial")
 #log_reg = glm(UPSET~. -HSEED -LSEED -YEAR -ROUND, data=games2.train, family="binomial")
@@ -148,5 +149,5 @@ r23prob
 
 ```{r}
 df23prob <- data.frame(r23prob) 
-write.csv(df23prob, 'upset_prob.csv', row.names=FALSE)
+write.csv(df23prob, 'upset_prob_w22.csv', row.names=FALSE)
 ```
