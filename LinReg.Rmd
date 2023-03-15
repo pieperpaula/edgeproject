@@ -39,7 +39,7 @@ lin_osr <- 1 - lin_SSE/lin_SST
 
 ```{r}
 games_full = read.csv("upset_data.csv")
-games2 = subset(games_full, select=-c(X,HTEAM,LTEAM,HSCORE,LSCORE,SCORE_DIFF))
+games2 = subset(games_full, select=-c(X,HTEAM,LTEAM,HSCORE,LSCORE,SCORE_DIFF,confW,confL,WAB))
 games2.train <- games2[games2$YEAR < 2019, ]
 games2.test <- games2[games2$YEAR >= 2019, ]
 #model.r1 <- games2[games2$YEAR == 2021, ]
@@ -69,9 +69,9 @@ model.r23_a = subset(model.r23, select=-c(X,HTEAM,LTEAM,WAB))
 ```
 
 ```{r}
-#log_reg = glm(UPSET~. -HSEED -LSEED -ADJOE -ADJDE -YEAR -ROUND -EFG_D -EFG_O -BARTHAG, data=games2.train, family="binomial")
+log_reg = glm(upset~. -HSEED -LSEED -ADJOE -ADJDE -YEAR -ROUND -EFG_D -EFG_O -BARTHAG, data=games2.train, family="binomial")
 
-log_reg = glm(upset~. -HSEED -LSEED -confW -confL -ADJOE -ADJDE -YEAR -ROUND -EFG_D -EFG_O -BARTHAG, data=games2, family="binomial")
+#log_reg = glm(upset~. -HSEED -LSEED -confW -confL -ADJOE -ADJDE -YEAR -ROUND -EFG_D -EFG_O -BARTHAG, data=games2, family="binomial")
 #log_reg = glm(UPSET~. -HSEED -LSEED -YEAR -ROUND, data=games2.train, family="binomial")
 summary(log_reg)
 ```
@@ -144,4 +144,9 @@ r23_log_pred <- predict(log_reg, newdata = model.r23_a)
 r23odds <- exp(r23_log_pred)
 r23prob <- r23odds/(1+r23odds)
 r23prob
+```
+
+```{r}
+df23prob <- data.frame(r23prob)
+write.csv(df23prob, 'upset_prob.csv', row.names=FALSE)
 ```
