@@ -147,6 +147,6 @@ r23prob
 ```
 
 ```{r}
-df23prob <- data.frame(r23prob)
+df23prob <- data.frame(r23prob) 
 write.csv(df23prob, 'upset_prob.csv', row.names=FALSE)
 ```
