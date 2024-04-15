@@ -19,17 +19,19 @@ library(dplyr)
 
 ```{r}
 games_og = read.csv("match_scores.csv")
-games_r2_2021 = read.csv("Logistic 2021 Model/r2_2021_logistic.csv")
+games_2024 = read.csv("all_games_2024.csv")
+#games_r2_2021 = read.csv("Logistic 2021 Model/r2_2021_logistic.csv")
 #games_r3_2021 = read.csv("r3_2021_logistic.csv")
 #games_r4_2021 = read.csv("r4_2021_logistic.csv")
 #games_r5_2021 = read.csv("r5_2021_logistic.csv")
-games_r1_2022 = read.csv("r1_2022.csv")
-games_r1_2021 = read.csv("r1_2021.csv")
-games_2023 = read.csv("all_games_2023.csv")
-teams_2023 = read.csv("teams2023.csv")
-teams_2022 = read.csv("team2022.csv")
+#games_r1_2022 = read.csv("r1_2022.csv")
+#games_r1_2021 = read.csv("r1_2021.csv")
+#games_2023 = read.csv("all_games_2023.csv")
+#teams_2023 = read.csv("teams2023.csv")
+#teams_2022 = read.csv("team2022.csv")
 teams = read.csv("team_data.csv")
 teams.test = read.csv("team_data_21.csv")
+teams_2024 = read.csv("teams2024.csv")
 ```
 
 ```{r}
@@ -53,18 +55,20 @@ organize <- function(games)
   games$X2P_D = NA
   games$X3P_O = NA
   games$X3P_D = NA
+  games$X3PR = NA
+  games$X3PRD = NA
   games$ADJ_T = NA
   games$WAB = NA
 ```
 
 ```{r}
-organize(games_r2_2021)
+#organize(games_r2_2021)
 #organize(games_r3_2021)
 #organize(games_r4_2021)
 #organize(games_r5_2021)
-organize(games_r1_2022)
-organize(games_r1_2021)
-organize(games_2023)
+#organize(games_r1_2022)
+#organize(games_r1_2021)
+organize(games_2024)
 ```
 
 ```{r}
@@ -99,6 +103,8 @@ update_table <- function(games, game_index, data){
   games[game_index,"X2P_D"] = data[team1_index,"X2P_D"] - data[team2_index,"X2P_D"]
   games[game_index,"X3P_O"] = data[team1_index,"X3P_O"] - data[team2_index,"X3P_O"]
   games[game_index,"X3P_D"] = data[team1_index,"X3P_D"] - data[team2_index,"X3P_D"]
+  games[game_index,"X3PR"] = data[team1_index,"X3PR"] - data[team2_index,"X3PR"]
+  games[game_index,"X3PRD"] = data[team1_index,"X3PRD"] - data[team2_index,"X3PRD"]
   games[game_index,"ADJ_T"] = data[team1_index,"ADJ_T"] - data[team2_index,"ADJ_T"]
   games[game_index,"WAB"] = data[team1_index,"WAB"] - data[team2_index,"WAB"]
   
@@ -151,7 +157,7 @@ for (x in 1:31){
 
 ```{r}
 for (x in 1:2278){
-  games_2023 <- update_table(games_2023,x,teams_2023)
+  games_2024 <- update_table(games_2024,x,teams_2024)
 }
 ```
 
@@ -162,6 +168,6 @@ for (x in 1:2278){
 #write.csv(games_r5_2021, "r5games_log.csv")
 #write.csv(games_r1_2022, "r1games_2022.csv")
 #write.csv(games_r1_2021, "r1games_2021.csv")
-write.csv(games_2023, "games_2023.csv")
+write.csv(games_2024, "games_2024.csv")
 ```
 
